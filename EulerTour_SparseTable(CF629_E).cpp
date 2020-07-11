@@ -1,5 +1,5 @@
 //Wrong answer on test55
-//Waiting for debugging
+//Wait for debugging
 
 #include <bits/stdc++.h>
 #include <numeric>
