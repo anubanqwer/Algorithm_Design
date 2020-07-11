@@ -1,6 +1,3 @@
-//Wrong answer on test55
-//Wait for debugging
-
 #include <bits/stdc++.h>
 #include <numeric>
 #include <iomanip>
@@ -127,28 +124,21 @@ int main(){
 		}
 		bool ok = true;
 		for(auto &c: v1){
-			if( LCA(deepest_node, c) != 1 ) continue;
-			if( distance_from_root[c] > 1 ){
-				ok = false;
-				break;
+			int low_anscestor = LCA(deepest_node, c);
+			if( low_anscestor != 1 ){
+				if( distance_from_root[c] - distance_from_root[low_anscestor] > 1 ){
+					ok = false;
+					break;
+				}
+			}	
+			else{
+				if( distance_from_root[c] > 1 ){
+					ok = false;
+					break;
+				}
 			}
 		}
 		cout << ( ok ? "YES\n" : "NO\n" );
 	}
-	/*
-	//test
-	for(int i=0; i < 11; i++) cout << distance_from_root[i] << " ";
-	cout << "\n";
-	//
-	for(auto &c: euler_tour) cout << c << " ";
-	cout << "\n";
-	cout << "Startmap\n";
-	for(auto &c: m1) cout << c.first << " " << c.second << "\n";
-	//
-	for(int i=0; i < 11; i++) cout << first_encounter[i] << " ";
-	cout << "\n";
-	//
-	cout << LCA(8,9) << "\n"; //ans should be 7
-	cout << LCA(6,9) << "\n"; //ans shoule be 1
-	*/
+	
 }
