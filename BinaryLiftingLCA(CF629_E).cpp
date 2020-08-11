@@ -1,3 +1,5 @@
+This code have a bug. Edited 11/8/2020
+
 #include <bits/stdc++.h>
 #include <numeric>
 #include <iomanip>
