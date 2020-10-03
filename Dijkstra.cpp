@@ -42,3 +42,5 @@ int main(){
 	for(int i=1; i <= n; i++) cout << d[i] << " ";
 
 }
+
+//Reference: https://pastebin.com/BV3AkVF0
