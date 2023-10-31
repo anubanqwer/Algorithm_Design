@@ -1,0 +1,89 @@
+import math
+
+"""
+slide link: https://docs.google.com/presentation/d/1gr10NYtPSjWfv8cVECE2D5FIcQbdwfVdi_NM3owRbQs/edit?usp=drive_link
+youtube link: 
+"""
+
+#Node for tree only
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.depth = None
+        self.parent = None
+        self.childrens = []
+        
+    def add_child(self, child):
+        self.childrens.append(child)
+        child.parent = self
+
+class Tree:
+    def __init__(self, node=None):
+        self.root = node
+        self.bi_lift = None
+
+    def calculate_depth(self, current_node, current_depth = 0):
+        current_node.depth = current_depth
+        for c in current_node.childrens:
+            self.calculate_depth(c, current_depth + 1)
+
+    def calculate_binary_lifting(self):
+        #BINARY LIFTING
+        k = math.ceil(math.log2(n))
+        self.bi_lift = [[None for i in range(k+1)] for j in range(n)]
+        pointer_array[0].parent = pointer_array[0]
+
+        for i in range(n):
+            self.bi_lift[i][0] = pointer_array[i].parent
+        for j in range(1, k+1):
+            for i in range(n):
+                self.bi_lift[i][j] = self.bi_lift[self.bi_lift[i][j-1].value][j-1]
+
+    def find_lca(self, u, v):
+        #assume u and v are pointers
+        if u.depth > v.depth:
+            u, v = v, u 
+        
+        k = math.ceil(math.log2(n))
+        #lifting lower node to the same level as a higher node
+        for i in range(k, -1, -1):
+            v_dash = self.bi_lift[v.value][i]
+            if v_dash.depth >= u.depth:
+                v = v_dash
+        
+        if u == v:
+            return u
+
+        #lifting for finding lca
+        for i in range(k, -1, -1):
+            u_dash = self.bi_lift[u.value][i]
+            v_dash = self.bi_lift[v.value][i]
+            if u_dash != v_dash:
+                u = u_dash
+                v = v_dash
+        
+        return u.parent
+
+#TEST
+#SETUP TREE
+n = 13
+pointer_array = []
+for i in range(n):
+    pointer_array.append(Node(i))
+relations = [(0, 1), (0, 2), (2, 3), (2, 5), (2, 6), (3, 4), (5, 7), (7, 8), (8, 9), (8, 10), (8, 11), (10, 12)]
+for r in relations:
+    pointer_array[r[0]].add_child(pointer_array[r[1]])
+
+t = Tree()
+t.root = pointer_array[0]
+t.calculate_depth(t.root)
+#print([pointer_array[i].depth for i in range(n)])
+
+t.calculate_binary_lifting()
+print(t.find_lca(pointer_array[4], pointer_array[12]).value)
+print(t.find_lca(pointer_array[5], pointer_array[8]).value)
+print(t.find_lca(pointer_array[1], pointer_array[11]).value)
+print(t.find_lca(pointer_array[9], pointer_array[12]).value)
+print(t.find_lca(pointer_array[6], pointer_array[11]).value)
+
+#Answer: 2 5 0 8 2
